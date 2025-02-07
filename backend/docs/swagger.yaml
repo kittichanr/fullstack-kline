@@ -1,0 +1,244 @@
+definitions:
+  domain.AccountBalanceResponse:
+    properties:
+      amount:
+        type: number
+    type: object
+  domain.AccountDetailResponse:
+    properties:
+      color:
+        type: string
+      is_main_account:
+        type: boolean
+      progress:
+        type: integer
+    type: object
+  domain.AccountFlagResponse:
+    properties:
+      flag_id:
+        type: integer
+      flag_type:
+        type: string
+      flag_value:
+        type: string
+    type: object
+  domain.AccountResponse:
+    properties:
+      account_number:
+        type: string
+      currency:
+        type: string
+      dummy_col_3:
+        type: string
+      issuer:
+        type: string
+      type:
+        type: string
+    type: object
+  domain.AccountWithDetailsResponse:
+    properties:
+      account:
+        $ref: '#/definitions/domain.AccountResponse'
+      balance:
+        $ref: '#/definitions/domain.AccountBalanceResponse'
+      detail:
+        $ref: '#/definitions/domain.AccountDetailResponse'
+      flags:
+        items:
+          $ref: '#/definitions/domain.AccountFlagResponse'
+        type: array
+    type: object
+  domain.Banner:
+    properties:
+      banner_id:
+        type: string
+      description:
+        type: string
+      dummy_col_11:
+        type: string
+      image:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: string
+    type: object
+  domain.DebitCardWithDetailsResponse:
+    properties:
+      border_color:
+        type: string
+      color:
+        type: string
+      issuer:
+        type: string
+      name:
+        type: string
+      number:
+        type: string
+      status:
+        type: string
+    type: object
+  domain.UserAccountAggregateResponse:
+    properties:
+      accounts:
+        items:
+          $ref: '#/definitions/domain.AccountWithDetailsResponse'
+        type: array
+    type: object
+  domain.UserDebitCardAggregateResponse:
+    properties:
+      cards:
+        items:
+          $ref: '#/definitions/domain.DebitCardWithDetailsResponse'
+        type: array
+    type: object
+  domain.UserGreeting:
+    properties:
+      dummy_col_2:
+        type: string
+      greeting:
+        type: string
+      user_id:
+        type: string
+    type: object
+  handler.PinRequest:
+    properties:
+      name:
+        type: string
+      pin:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/accounts/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get string by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserAccountAggregateResponse'
+      summary: get account from user id
+      tags:
+      - Account
+  /api/auth-pin:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user and returns a JWT token
+      parameters:
+      - description: User name and PIN
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.PinRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Authenticate user via PIN
+      tags:
+      - Auth
+  /api/banner/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get string by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Banner'
+            type: array
+      summary: get banner from user id
+      tags:
+      - Banner
+  /api/debit-card/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get string by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserDebitCardAggregateResponse'
+      summary: get banner from user id
+      tags:
+      - Debit Card
+  /api/set-pin:
+    post:
+      consumes:
+      - application/json
+      description: Allows a user to set a PIN for authentication
+      parameters:
+      - description: User name and PIN
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.PinRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message: PIN set successfully'
+          schema:
+            type: string
+      summary: Set a PIN for a user
+      tags:
+      - Auth
+  /api/user/greeting/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get string by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserGreeting'
+      summary: get greeting from user id
+      tags:
+      - User
+swagger: "2.0"
