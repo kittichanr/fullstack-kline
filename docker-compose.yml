@@ -1,19 +1,19 @@
 version: "3.9"
 
 services:
-  # db:
-  #   image: mysql:8.3.0
-  #   container_name: mysql-db
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: password
-  #     MYSQL_DATABASE: kline
-  #     MYSQL_USER: user
-  #     MYSQL_PASSWORD: password
-  #   ports:
-  #     - "3306:3306"
-  #   volumes:
-  #     - db_data:/var/lib/mysql
-  #     - ./backend/db/mysql-config:/etc/mysql/conf.d
+  db:
+    image: mysql:8.3.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: kline
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./backend/db/mysql-config:/etc/mysql/conf.d
 
   kline-server:
     container_name: kline-server
